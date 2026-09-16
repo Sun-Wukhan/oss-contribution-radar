@@ -1,0 +1,44 @@
+{
+  "repositories": [
+    {
+      "name": "hashicorp/terraform",
+      "minimum_stars": 10000
+    },
+    {
+      "name": "opentofu/opentofu",
+      "minimum_stars": 10000
+    },
+    {
+      "name": "terraform-docs/terraform-docs",
+      "minimum_stars": 4000
+    },
+    {
+      "name": "gruntwork-io/terragrunt",
+      "minimum_stars": 5000
+    },
+    {
+      "name": "terraform-linters/tflint",
+      "minimum_stars": 5000
+    },
+    {
+      "name": "helm/helm",
+      "minimum_stars": 20000
+    },
+    {
+      "name": "ansible/ansible",
+      "minimum_stars": 50000
+    },
+    {
+      "name": "pulumi/pulumi",
+      "minimum_stars": 20000
+    },
+    {
+      "name": "aquasecurity/trivy",
+      "minimum_stars": 25000
+    },
+    {
+      "name": "kubernetes-sigs/external-dns",
+      "minimum_stars": 8000
+    }
+  ]
+}

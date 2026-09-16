@@ -1,0 +1,56 @@
+name: Daily contribution radar
+
+on:
+  schedule:
+    - cron: "0 13 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-contribution-radar
+  cancel-in-progress: false
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v7
+
+      - name: Set up Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v7
+        with:
+          python-version: "3.12"
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@bec219d24cd3e171d82865faccec33120bb574f4 # v10.1.0
+        with:
+          enable-cache: true
+
+      - name: Install locked dependencies
+        run: uv sync --locked
+
+      - name: Generate report
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: uv run contribution-radar
+
+      - name: Publish workflow summary
+        run: cat REPORT.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Commit changed report as GitHub Actions
+        run: |
+          if git diff --quiet -- REPORT.md; then
+            echo "Report is unchanged."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add REPORT.md
+          git commit -m "chore: refresh contribution radar"
+          git push
